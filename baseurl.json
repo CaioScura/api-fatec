@@ -1,0 +1,12 @@
+{
+  "name": "teste",
+  "v": 1,
+  "id": "1kojz8wiy4t",
+  "variables": [
+    {
+      "key": "baseurl",
+      "value": "http://localhost:8081/",
+      "secret": false
+    }
+  ]
+}
