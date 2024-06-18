@@ -1,5 +1,6 @@
 package br.com.api.fatec.apifatec.controllers;
 
+import br.com.api.fatec.apifatec.domain.pedidovenda.PedidoVendaRepository;
 import br.com.api.fatec.apifatec.domain.pedidovenda.PedidoVendaService;
 import br.com.api.fatec.apifatec.entities.PedidoVenda;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class PedidoVendaControllerV2 {
     @Autowired
     private PedidoVendaService pedidoVendaService;
+	private PedidoVendaRepository pedidoVendaRepository;
 
 	// Adicionar um novo pedido
 	@PostMapping
@@ -67,4 +69,10 @@ public class PedidoVendaControllerV2 {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+	
+	@GetMapping("/produtos/{produtoId}/pedidos")
+    public List<PedidoVenda> getPedidosByProdutoId(@PathVariable Long produtoId) {
+        return pedidoVendaRepository.findByProdutoId(produtoId);
+    }
 }
