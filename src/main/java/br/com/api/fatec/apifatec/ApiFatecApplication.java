@@ -119,14 +119,32 @@ public class ApiFatecApplication {
             transportadoraRepository.save(t4);
             transportadoraRepository.save(t5);
             
-            //Fornecedor
-            Fornecedor f1 = new Fornecedor("Fornecedor A", "contatoA@example.com");
-            Fornecedor f2 = new Fornecedor("Fornecedor B", "contatoB@example.com");
-            Fornecedor f3 = new Fornecedor("Fornecedor C", "contatoC@example.com");
-            Fornecedor f4 = new Fornecedor("Fornecedor D", "contatoD@example.com");
-            Fornecedor f5 = new Fornecedor("Fornecedor E", "contatoE@example.com");
+         // Inicializar Fornecedores
+            Fornecedor f1 = new Fornecedor();
+            f1.setNome("Fornecedor A");
+            f1.setContato("contatoA@example.com");
 
-            fornecedorRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5));
+            Fornecedor f2 = new Fornecedor();
+            f2.setNome("Fornecedor B");
+            f2.setContato("contatoB@example.com");
+            
+            Fornecedor f3 = new Fornecedor();
+            f3.setNome("Fornecedor C");
+            f3.setContato("contatoC@example.com");
+
+            Fornecedor f4 = new Fornecedor();
+            f4.setNome("Fornecedor D");
+            f4.setContato("contatoD@example.com");
+
+            Fornecedor f5 = new Fornecedor();
+            f5.setNome("Fornecedor E");
+            f5.setContato("contatoE@example.com");
+
+            fornecedorRepository.save(f1);
+            fornecedorRepository.save(f2);
+            fornecedorRepository.save(f3);
+            fornecedorRepository.save(f4);
+            fornecedorRepository.save(f5);
         };
     }
 

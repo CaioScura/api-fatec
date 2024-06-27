@@ -3,17 +3,14 @@ package br.com.api.fatec.apifatec.controllers;
 import java.util.List;
 
 import br.com.api.fatec.apifatec.entities.Fornecedor;
-import br.com.api.fatec.apifatec.entities.Transportadora;
-import br.com.api.fatec.apifatec.domain.fornecedor.FornecedorRepository;
 import br.com.api.fatec.apifatec.domain.fornecedor.FornecedorService;
-import br.com.api.fatec.apifatec.domain.transportadora.TransportadoraService;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/fornecedores")
