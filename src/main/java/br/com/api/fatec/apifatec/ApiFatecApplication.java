@@ -2,6 +2,7 @@ package br.com.api.fatec.apifatec;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import br.com.api.fatec.apifatec.domain.pedidovenda.PedidoVendaService;
 import br.com.api.fatec.apifatec.entities.PedidoVenda;
@@ -14,9 +15,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import br.com.api.fatec.apifatec.domain.cliente.ClienteRepository;
+import br.com.api.fatec.apifatec.domain.fornecedor.FornecedorRepository;
 import br.com.api.fatec.apifatec.domain.pedidovenda.PedidoVendaRepository;
 import br.com.api.fatec.apifatec.domain.produto.ProdutoRepository;
 import br.com.api.fatec.apifatec.entities.Cliente;
+import br.com.api.fatec.apifatec.entities.Fornecedor;
 import br.com.api.fatec.apifatec.entities.Produto;
 import br.com.api.fatec.apifatec.entities.Transportadora;
 import br.com.api.fatec.apifatec.domain.transportadora.TransportadoraRepository;
@@ -27,7 +30,8 @@ public class ApiFatecApplication {
     public CommandLineRunner run(@Autowired ClienteRepository clienteRepository,
                                  @Autowired ProdutoRepository produtoRepository,
                                  @Autowired PedidoVendaRepository pedidoVendaRepository,
-                                 @Autowired TransportadoraRepository transportadoraRepository) {
+                                 @Autowired TransportadoraRepository transportadoraRepository,
+                                 @Autowired FornecedorRepository fornecedorRepository) {
         return args -> {
             Cliente cliente = new Cliente();
             cliente.setNome("Danilo");
@@ -114,6 +118,15 @@ public class ApiFatecApplication {
             transportadoraRepository.save(t3);
             transportadoraRepository.save(t4);
             transportadoraRepository.save(t5);
+            
+            //Fornecedor
+            Fornecedor f1 = new Fornecedor("Fornecedor A", "contatoA@example.com");
+            Fornecedor f2 = new Fornecedor("Fornecedor B", "contatoB@example.com");
+            Fornecedor f3 = new Fornecedor("Fornecedor C", "contatoC@example.com");
+            Fornecedor f4 = new Fornecedor("Fornecedor D", "contatoD@example.com");
+            Fornecedor f5 = new Fornecedor("Fornecedor E", "contatoE@example.com");
+
+            fornecedorRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5));
         };
     }
 
