@@ -1,71 +1,48 @@
 package br.com.api.fatec.apifatec.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.api.fatec.apifatec.domain.transportadora.TransportadoraRepository;
 import br.com.api.fatec.apifatec.entities.Transportadora;
-
-import java.util.List;
-import java.util.Optional;
+import br.com.api.fatec.apifatec.domain.transportadora.TransportadoraService;
 
 @RestController
 @RequestMapping("/transportadoras")
 public class TransportadoraController {
 
     @Autowired
-    private TransportadoraRepository transportadoraRepository;
+    private TransportadoraService service;
 
-    // Criação de Transportadora
     @PostMapping
-    public ResponseEntity<Transportadora> criarTransportadora(@RequestBody Transportadora transportadora) {
-        Transportadora novaTransportadora = transportadoraRepository.save(transportadora);
-        return new ResponseEntity<>(novaTransportadora, HttpStatus.CREATED);
+    public ResponseEntity<Transportadora> create(@RequestBody Transportadora transportadora) {
+        Transportadora createdTransportadora = service.create(transportadora);
+        return ResponseEntity.ok(createdTransportadora);
     }
 
-    // Leitura de todas as Transportadoras
     @GetMapping
-    public List<Transportadora> listarTransportadoras() {
-        return transportadoraRepository.findAll();
+    public ResponseEntity<List<Transportadora>> findAll() {
+        List<Transportadora> transportadoras = service.findAll();
+        return ResponseEntity.ok(transportadoras);
     }
 
-    // Leitura de Transportadora por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Transportadora> obterTransportadoraPorId(@PathVariable Long id) {
-        Optional<Transportadora> transportadora = transportadoraRepository.findById(id);
-        if (transportadora.isPresent()) {
-            return new ResponseEntity<>(transportadora.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Transportadora> findById(@PathVariable Long id) {
+        Transportadora transportadora = service.findById(id).orElseThrow();
+        return ResponseEntity.ok(transportadora);
     }
 
-    // Atualização de Transportadora
     @PutMapping("/{id}")
-    public ResponseEntity<Transportadora> atualizarTransportadora(@PathVariable Long id, @RequestBody Transportadora dadosAtualizados) {
-        Optional<Transportadora> transportadoraExistente = transportadoraRepository.findById(id);
-        if (transportadoraExistente.isPresent()) {
-            Transportadora transportadora = transportadoraExistente.get();
-            transportadora.setNome(dadosAtualizados.getNome());
-            transportadora.setTelefone(dadosAtualizados.getTelefone());
-            transportadoraRepository.save(transportadora);
-            return new ResponseEntity<>(transportadora, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Transportadora> update(@PathVariable Long id, @RequestBody Transportadora transportadora) {
+        Transportadora updatedTransportadora = service.update(id, transportadora);
+        return ResponseEntity.ok(updatedTransportadora);
     }
 
-    // Deleção de Transportadora
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarTransportadora(@PathVariable Long id) {
-        if (transportadoraRepository.existsById(id)) {
-            transportadoraRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
-

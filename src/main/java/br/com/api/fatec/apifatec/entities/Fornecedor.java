@@ -7,19 +7,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+
 @Entity
-@Table(name = "transportadoras")
-public class Transportadora {
+@Table(name = "fornecedor")
+public class Fornecedor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, length = 20)
-    private String telefone;
+    @Column(nullable = false)
+    private String contato;
+
+    // construtores
+    public Fornecedor() {
+    }
+
+    public Fornecedor(String nome, String contato) {
+        this.nome = nome;
+        this.contato = contato;
+    }
 
     // Getters e Setters
     public Long getId() {
@@ -38,11 +48,11 @@ public class Transportadora {
         this.nome = nome;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getContato() {
+        return contato;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setContato(String contato) {
+        this.contato = contato;
     }
 }
