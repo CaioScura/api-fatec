@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.api.fatec.apifatec.entities.Fornecedor;
 import br.com.api.fatec.apifatec.entities.Transportadora;
 import br.com.api.fatec.apifatec.domain.fornecedor.FornecedorRepository;
+import br.com.api.fatec.apifatec.domain.fornecedor.FornecedorService;
 import br.com.api.fatec.apifatec.domain.transportadora.TransportadoraService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,27 +20,27 @@ import java.util.Optional;
 public class FornecedorController {
 
     @Autowired
-    private FornecedorRepository fornecedorRepository;
+    private FornecedorService fornecedorService;
 
     // Criação de Fornecedor
     @PostMapping
     public ResponseEntity<Fornecedor> criarFornecedor(@RequestBody Fornecedor fornecedor) {
-        Fornecedor novoFornecedor = fornecedorRepository.save(fornecedor);
+        Fornecedor novoFornecedor = fornecedorService.salvarFornecedor(fornecedor);
         return new ResponseEntity<>(novoFornecedor, HttpStatus.CREATED);
     }
 
     // Leitura de todos os Fornecedores
     @GetMapping
     public List<Fornecedor> listarFornecedores() {
-        return fornecedorRepository.findAll();
+        return fornecedorService.listarFornecedores();
     }
 
     // Leitura de Fornecedor por ID
     @GetMapping("/{id}")
     public ResponseEntity<Fornecedor> obterFornecedorPorId(@PathVariable Long id) {
-        Optional<Fornecedor> fornecedor = fornecedorRepository.findById(id);
-        if (fornecedor.isPresent()) {
-            return new ResponseEntity<>(fornecedor.get(), HttpStatus.OK);
+        Fornecedor fornecedor = fornecedorService.encontrarFornecedorPorId(id);
+        if (fornecedor != null) {
+            return new ResponseEntity<>(fornecedor, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -48,13 +49,9 @@ public class FornecedorController {
     // Atualização de Fornecedor
     @PutMapping("/{id}")
     public ResponseEntity<Fornecedor> atualizarFornecedor(@PathVariable Long id, @RequestBody Fornecedor dadosAtualizados) {
-        Optional<Fornecedor> fornecedorExistente = fornecedorRepository.findById(id);
-        if (fornecedorExistente.isPresent()) {
-            Fornecedor fornecedor = fornecedorExistente.get();
-            fornecedor.setNome(dadosAtualizados.getNome());
-            fornecedor.setContato(dadosAtualizados.getContato());
-            fornecedorRepository.save(fornecedor);
-            return new ResponseEntity<>(fornecedor, HttpStatus.OK);
+        Fornecedor fornecedorAtualizado = fornecedorService.atualizarFornecedor(id, dadosAtualizados);
+        if (fornecedorAtualizado != null) {
+            return new ResponseEntity<>(fornecedorAtualizado, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -63,10 +60,10 @@ public class FornecedorController {
     // Deleção de Fornecedor
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFornecedor(@PathVariable Long id) {
-        if (fornecedorRepository.existsById(id)) {
-            fornecedorRepository.deleteById(id);
+        try {
+            fornecedorService.deletarFornecedor(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } else {
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
